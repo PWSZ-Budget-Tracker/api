@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Budget_Tracker.VievModel
 {
-    public class ClientVM
+    public class UserVM
     {
         public int Id { get; set; }
         public string Email { get; set; }

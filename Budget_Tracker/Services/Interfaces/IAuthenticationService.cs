@@ -13,7 +13,6 @@ namespace Budget_Tracker.Services.Interfaces
         public Task<IActionResult> Register(RegisterRequest registerRequest);
         public Task<IActionResult> Login(LoginRequest loginRequest);
         //public Task<IActionResult> Logout();
-        //User Authenticate(string Email);
 
 
     }

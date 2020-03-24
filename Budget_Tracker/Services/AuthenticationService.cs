@@ -16,9 +16,11 @@ namespace Budget_Tracker.Services
     {
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
-        public AuthenticationService(BudgetTrackerContext context, SignInManager<User> signInManager, UserManager<User> userManager): base(context)
+        private readonly IJwtService _jwtService;
+        public AuthenticationService(BudgetTrackerContext context, SignInManager<User> signInManager, UserManager<User> userManager, IJwtService jwtService) : base(context)
         {
             _signInManager = signInManager;
+            _jwtService = jwtService;
             _userManager = userManager;
         }
 
@@ -37,16 +39,10 @@ namespace Budget_Tracker.Services
                 return Failure();
             }
 
-            var user = Authenticate(loginRequest.Email);
-
-
-            var client = new ClientVM()
-            {
-                Id = user.Id,
-                Email = user.Email,
-                Token = user.Token
-            };
-            return Success(client);
+            var token = _jwtService.GenerateJwtToken(loginRequest.Email);
+            if(token == null)
+                return Failure();
+            return Success(token);
         }
 
         public async Task<IActionResult> Register(RegisterRequest registerRequest)

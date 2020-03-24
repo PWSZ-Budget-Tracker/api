@@ -50,6 +50,7 @@ namespace Budget_Tracker
             services.Configure<AppSettings>(appSettingsSection);
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IJwtService, JwtService>();
 
             // configure jwt authentication
             var appSettings = appSettingsSection.Get<AppSettings>();
@@ -115,6 +116,7 @@ namespace Budget_Tracker
                 options.DocumentPath = "/swagger/v1/swagger.json";
             });
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
