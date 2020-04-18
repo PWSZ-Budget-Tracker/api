@@ -16,13 +16,8 @@ namespace Budget_Tracker.Controllers
     {
         protected readonly SignInManager<User> signInManager = null;
         protected readonly UserManager<User> userManager = null;
-        protected readonly ILoggerFactory loggerFactory = null;
 
-        public BaseController( ILoggerFactory loggerFactory)
-
-        {
-            this.loggerFactory = loggerFactory;
-        }
+        public BaseController(){}
 
         protected IActionResult Success()
         {

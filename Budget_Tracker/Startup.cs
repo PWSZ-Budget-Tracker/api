@@ -50,6 +50,7 @@ namespace Budget_Tracker
             services.Configure<AppSettings>(appSettingsSection);
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IJwtService, JwtService>();
 
             // configure jwt authentication

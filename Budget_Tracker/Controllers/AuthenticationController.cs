@@ -19,51 +19,29 @@ namespace Budget_Tracker.Controllers
     public class AuthenticationController : BaseController
     {
         private readonly IAuthenticationService _authenticationService;
-        private readonly ILogger<AuthenticationController> logger = null;
-        public AuthenticationController(IAuthenticationService authenticationService, ILoggerFactory loggerFactory)
-            : base(loggerFactory)
+        public AuthenticationController(IAuthenticationService authenticationService)
         {
-
             _authenticationService = authenticationService;
         }
         //[Route("Register")]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterRequest registerRequest)
         {
-            try
-            {
-                if (!ModelState.IsValid) 
+            if (!ModelState.IsValid) 
                 {
                     return Failure();
                 }
-
-                return await _authenticationService.Register(registerRequest);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Error in Register()!");
-                return Failure();
-            }
+            return await _authenticationService.Register(registerRequest);
         }
         //[Route("Login")]
         [HttpPost]
         public async Task<IActionResult> Login(LoginRequest loginRequest)
         {
-            try
-            {
-                if (!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 {
                     return Failure();
                 }
-
-                return await _authenticationService.Login(loginRequest);
-            }
-            catch (Exception ex)
-            {
-
-                logger.LogError(ex, "Error in LogIn()");
-                return Failure();
-            }
+            return await _authenticationService.Login(loginRequest);
         }
 
         ////[Route("Logout")]
@@ -82,35 +60,5 @@ namespace Budget_Tracker.Controllers
         //        return Failure();
         //    }
         //}
-        //[HttpPost]
-        //public async Task<IActionResult> IsLoggedIn()
-        //{
-        //    try
-        //    {
-        //        if (HttpContext.User.Identity.IsAuthenticated)
-        //        {
-        //            var user = await UserManager.GetUserAsync(HttpContext.User);
-        //            if (user != null)
-        //            {
-        //                return Success(new { Email = HttpContext.User.Identity.Name });
-        //            }
-
-        //            await signInManager.SignOutAsync();
-        //            return Failure();
-        //        }
-        //        else
-        //        {
-        //            return Failure();
-        //        }
-
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        logger.LogError(ex, "Error in IsLoggedIn()");
-        //        return Failure();
-        //    }
-        //}
-
     }
 }
