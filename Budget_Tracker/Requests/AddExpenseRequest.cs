@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace Budget_Tracker.Requests
 {
-    public class AddCategoryRequest
+    public class AddExpenseRequest
     {
+        public int CategoryId { get; set; }
         public int UserId { get; set; }
-        public string Name { get; set; }
-        public CategoryType Type { get; set; }
+        public decimal Amount { get; set; }
+        public int CurrencyId { get; set; }
     }
 }

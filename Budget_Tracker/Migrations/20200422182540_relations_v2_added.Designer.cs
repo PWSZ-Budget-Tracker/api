@@ -4,14 +4,16 @@ using Budget_Tracker.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Budget_Tracker.Migrations
 {
     [DbContext(typeof(BudgetTrackerContext))]
-    partial class BudgetTrackerContextModelSnapshot : ModelSnapshot
+    [Migration("20200422182540_relations_v2_added")]
+    partial class relations_v2_added
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,9 +84,6 @@ namespace Budget_Tracker.Migrations
                     b.Property<int>("CurrencyId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("TimeStamp")
                         .HasColumnType("datetime2");
 
@@ -121,12 +120,6 @@ namespace Budget_Tracker.Migrations
                     b.Property<decimal>("GoalAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("TimeStamp")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -156,9 +149,6 @@ namespace Budget_Tracker.Migrations
 
                     b.Property<int>("CurrencyId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime>("TimeStamp")
                         .HasColumnType("datetime2");
@@ -387,13 +377,13 @@ namespace Budget_Tracker.Migrations
             modelBuilder.Entity("Budget_Tracker.Models.Expense", b =>
                 {
                     b.HasOne("Budget_Tracker.Models.Category", "Category")
-                        .WithMany("Expenses")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Budget_Tracker.Models.Currency", "Currency")
-                        .WithMany("Expenses")
+                        .WithMany()
                         .HasForeignKey("CurrencyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -408,13 +398,13 @@ namespace Budget_Tracker.Migrations
             modelBuilder.Entity("Budget_Tracker.Models.Goal", b =>
                 {
                     b.HasOne("Budget_Tracker.Models.Category", "Category")
-                        .WithMany("Goals")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Budget_Tracker.Models.Currency", "Currency")
-                        .WithMany("Goals")
+                        .WithMany()
                         .HasForeignKey("CurrencyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -429,13 +419,13 @@ namespace Budget_Tracker.Migrations
             modelBuilder.Entity("Budget_Tracker.Models.Income", b =>
                 {
                     b.HasOne("Budget_Tracker.Models.Category", "Category")
-                        .WithMany("Incomes")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Budget_Tracker.Models.Currency", "Currency")
-                        .WithMany("Incomes")
+                        .WithMany()
                         .HasForeignKey("CurrencyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

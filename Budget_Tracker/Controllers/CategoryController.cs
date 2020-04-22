@@ -22,15 +22,15 @@ namespace Budget_Tracker.Controllers
             _categoryService = categoryService;
         }
         //[Route("")]
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
+        [HttpPost]
+        public async Task<IActionResult> GetAll(GetCategoriesRequest request)
         {
                 if (!ModelState.IsValid)
                 {
                     return Failure();
                 }
 
-                return await _categoryService.GetAll();
+                return await _categoryService.GetAll(request);
         }
 
         [HttpPost]

@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Budget_Tracker.Requests
 {
-    public class AddCategoryRequest
+    public class GetCategoriesRequest
     {
         public int UserId { get; set; }
-        public string Name { get; set; }
         public CategoryType Type { get; set; }
     }
 }
