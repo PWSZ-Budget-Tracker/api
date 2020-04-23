@@ -28,6 +28,8 @@ namespace Budget_Tracker.Services
 
         public async Task<IActionResult> Add(AddExpenseRequest request)
         {
+            if (request.Amount < 0)
+                return Failure();
             var expense = new Expense()
             {
                 CategoryId = request.CategoryId,
@@ -61,19 +63,16 @@ namespace Budget_Tracker.Services
             return Success();
         }
 
-        private ExpenseVM ConvertToVM(Expense expense)
+        private ExpenseVM ConvertToVM(Expense expense)=> new ExpenseVM()
         {
-            var dupa = new ExpenseVM()
-            {
-                Id = expense.Id,
-                Amount = expense.Amount,
-                Currency = new CurrencyVM()
+            Id = expense.Id,
+            Amount = expense.Amount,
+            Currency = new CurrencyVM()
                 {
                     ShortName = expense.Currency.ShortName
                 }
-            };
-            return dupa;
-        }
+        };
+        
 
     }
 }

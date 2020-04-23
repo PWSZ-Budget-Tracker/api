@@ -4,14 +4,16 @@ using Budget_Tracker.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Budget_Tracker.Migrations
 {
     [DbContext(typeof(BudgetTrackerContext))]
-    partial class BudgetTrackerContextModelSnapshot : ModelSnapshot
+    [Migration("20200423175641_general_database_refactor")]
+    partial class general_database_refactor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
