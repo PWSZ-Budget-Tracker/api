@@ -13,7 +13,7 @@ namespace Budget_Tracker.Models
         public int UserId { get; set; }
         [ForeignKey("UserId")]
         public User User { get; set; }
-        public decimal Amount { get; set; }
+        public decimal Amount { get; set; } = 0;
         public int CurrencyId { get; set; }
         [ForeignKey("CurrencyId")]
         public Currency Currency { get; set; }

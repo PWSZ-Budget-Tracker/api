@@ -41,8 +41,6 @@ namespace Budget_Tracker
             services.AddDbContext<BudgetTrackerContext>(
                options => options.UseSqlServer(Configuration.GetConnectionString("BudgetTracker")));
 
-
-
             services.AddIdentity<User, IdentityRole<int>>()
                 .AddEntityFrameworkStores<BudgetTrackerContext>();
 
@@ -53,6 +51,7 @@ namespace Budget_Tracker
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IExpenseService, ExpenseService>();
             services.AddScoped<IGoalService, GoalService>();
+            services.AddScoped<IIncomeService, IncomeService>();
             services.AddScoped<IJwtService, JwtService>();
 
             // configure jwt authentication
@@ -93,7 +92,7 @@ namespace Budget_Tracker
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<User> userManager, BudgetTrackerContext context)
         {
             if (env.IsDevelopment())
             {
@@ -121,6 +120,8 @@ namespace Budget_Tracker
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            DatabaseSeeder.SeedData(userManager, context);
 
             app.UseEndpoints(endpoints =>
             {

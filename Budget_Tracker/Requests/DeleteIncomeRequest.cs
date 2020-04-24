@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Budget_Tracker.Enums
+namespace Budget_Tracker.Requests
 {
-    public enum CategoryType
+    public class DeleteIncomeRequest
     {
-        Expenses,
-        Income
+        public int IncomeId { get; set; }
     }
 }

@@ -26,7 +26,6 @@ namespace Budget_Tracker.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
             
         }
     }
