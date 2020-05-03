@@ -96,7 +96,20 @@ namespace Budget_Tracker
         {
             if (env.IsDevelopment())
             {
+                app.UseCors(builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
                 app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseCors(builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+                app.UseHsts();
+                app.UseHttpsRedirection();
             }
 
             app.UseOpenApi(options =>
