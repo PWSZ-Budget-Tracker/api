@@ -8,7 +8,6 @@ namespace Budget_Tracker.Requests
 {
     public class GetCategoriesRequest
     {
-        public int UserId { get; set; }
         public CategoryType Type { get; set; }
     }
 }

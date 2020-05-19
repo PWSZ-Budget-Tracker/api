@@ -14,14 +14,13 @@ namespace Budget_Tracker.Services
 {
     public class IncomeService : ServiceBase, IIncomeService
     {
-       
-
-        public IncomeService(BudgetTrackerContext context) : base(context)
+        public IncomeService(BudgetTrackerContext context, IJwtService jwtService) : base(context, jwtService)
         { }
 
         public async Task<IActionResult> GetAll(GetIncomesRequest request)
         {
-            var incomes = await _context.Incomes.Where(i => !i.IsDeleted && i.UserId == request.UserId &&
+            var userId = _jwtService.GetUserId();
+            var incomes = await _context.Incomes.Where(i => !i.IsDeleted && i.UserId == userId &&
                 i.TimeStamp.Month == request.Date.Month && i.TimeStamp.Year == request.Date.Year).Include(i => i.Currency).ToListAsync();
             var incomesDto = incomes.Select(row => ConvertToVM(row));
             return Success(incomesDto);
@@ -29,12 +28,13 @@ namespace Budget_Tracker.Services
 
         public async Task<IActionResult> Add(AddIncomeRequest request)
         {
+            var userId = _jwtService.GetUserId();
             if (request.Amount < 0)
                 return Failure();
             var income = new Income()
             {
                 CategoryId = request.CategoryId,
-                UserId = request.UserId,
+                UserId = userId,
                 Amount = request.Amount,
                 CurrencyId = request.CurrencyId
             };

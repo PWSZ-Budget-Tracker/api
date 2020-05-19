@@ -8,6 +8,5 @@ namespace Budget_Tracker.Requests
 {
     public class GetGoalsRequest
     {
-        public int UserId { get; set; }
     }
 }

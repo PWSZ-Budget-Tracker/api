@@ -7,6 +7,7 @@ using Budget_Tracker.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -53,6 +54,7 @@ namespace Budget_Tracker
             services.AddScoped<IGoalService, GoalService>();
             services.AddScoped<IIncomeService, IncomeService>();
             services.AddScoped<IJwtService, JwtService>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             // configure jwt authentication
             var appSettings = appSettingsSection.Get<AppSettings>();

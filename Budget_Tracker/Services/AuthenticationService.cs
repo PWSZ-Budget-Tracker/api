@@ -16,11 +16,9 @@ namespace Budget_Tracker.Services
     {
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
-        private readonly IJwtService _jwtService;
-        public AuthenticationService(BudgetTrackerContext context, SignInManager<User> signInManager, UserManager<User> userManager, IJwtService jwtService) : base(context)
+        public AuthenticationService(BudgetTrackerContext context, SignInManager<User> signInManager, UserManager<User> userManager, IJwtService jwtService) : base(context, jwtService)
         {
             _signInManager = signInManager;
-            _jwtService = jwtService;
             _userManager = userManager;
         }
 

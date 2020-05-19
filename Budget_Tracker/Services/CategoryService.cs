@@ -15,24 +15,27 @@ namespace Budget_Tracker.Services
 {
     public class CategoryService : ServiceBase, ICategoryService
     {
-        public CategoryService(BudgetTrackerContext context) : base(context)
+        public CategoryService(BudgetTrackerContext context, IJwtService jwtService) : base(context, jwtService)
         {}
 
         public async Task<IActionResult> GetAll(GetCategoriesRequest request)
         {
+            var userId = _jwtService.GetUserId();
+
             var categories = await _context.Categories.Where(i => !i.IsDeleted &&
-                (i.IsDefault || i.UserId == request.UserId) && i.Type == request.Type).ToListAsync();
+                (i.IsDefault || i.UserId == userId) && i.Type == request.Type).ToListAsync();
             var categoriesDto = categories.Select(row => ConvertToVM(row));
             return Success(categoriesDto);
         }
 
         public async Task<IActionResult> Add(AddCategoryRequest request)
         {
+            var userId = _jwtService.GetUserId();
             var category = new Category()
             {
                 Name = request.Name,
                 Type = request.Type,
-                UserId = request.UserId
+                UserId = userId
             };
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();

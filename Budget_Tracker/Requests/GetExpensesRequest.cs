@@ -8,7 +8,6 @@ namespace Budget_Tracker.Requests
 {
     public class GetExpensesRequest
     {
-        public int UserId { get; set; }
         public DateTime Date { get; set; }
     }
 }

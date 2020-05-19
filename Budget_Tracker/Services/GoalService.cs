@@ -15,24 +15,26 @@ namespace Budget_Tracker.Services
 {
     public class GoalService : ServiceBase, IGoalService
     {
-        public GoalService(BudgetTrackerContext context) : base(context)
+        public GoalService(BudgetTrackerContext context, IJwtService jwtService) : base(context, jwtService)
         { }
 
         public async Task<IActionResult> GetAll(GetGoalsRequest request)
         {
-            var goals = await _context.Goals.Where(i => !i.IsDeleted && i.UserId == request.UserId).Include(i => i.Currency).ToListAsync();
+            var userId = _jwtService.GetUserId();
+            var goals = await _context.Goals.Where(i => !i.IsDeleted && i.UserId == userId).Include(i => i.Currency).ToListAsync();
             var goalsDto = goals.Select(row => ConvertToVM(row));
             return Success(goalsDto);
         }
 
         public async Task<IActionResult> Add(AddGoalRequest request)
         {
+            var userId = _jwtService.GetUserId();
             if (request.GoalAmount < 0)
                 return Failure();
             var goal = new Goal()
             {
                 Name = request.Name,
-                UserId = request.UserId,
+                UserId = userId,
                 GoalAmount = request.GoalAmount,
                 CurrencyId = request.CurrencyId
             };
