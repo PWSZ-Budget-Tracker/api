@@ -16,7 +16,7 @@ namespace Budget_Tracker.Controllers
         {
             _authenticationService = authenticationService;
         }
-        //[Route("Register")]
+
         [HttpPost]
         public async Task<IActionResult> Register(RegisterRequest registerRequest)
         {
@@ -26,7 +26,7 @@ namespace Budget_Tracker.Controllers
                 }
             return await _authenticationService.Register(registerRequest);
         }
-        //[Route("Login")]
+
         [HttpPost]
         public async Task<IActionResult> Login(LoginRequest loginRequest)
         {

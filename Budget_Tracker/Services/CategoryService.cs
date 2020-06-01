@@ -1,4 +1,5 @@
 ﻿using Budget_Tracker.Database;
+using Budget_Tracker.Enums;
 using Budget_Tracker.Models;
 using Budget_Tracker.Requests;
 using Budget_Tracker.Services.Interfaces;
@@ -15,12 +16,12 @@ namespace Budget_Tracker.Services
         public CategoryService(BudgetTrackerContext context, IJwtService jwtService) : base(context, jwtService)
         {}
 
-        public async Task<IActionResult> GetAll(GetCategoriesRequest request)
+        public async Task<IActionResult> GetAll(CategoryType type)
         {
             var userId = _jwtService.GetUserId();
 
             var categories = await _context.Categories.Where(i => !i.IsDeleted &&
-                (i.IsDefault || i.UserId == userId) && i.Type == request.Type).ToListAsync();
+                (i.IsDefault || i.UserId == userId) && i.Type == type).ToListAsync();
             var categoriesDto = categories.Select(row => ConvertToVM(row));
             return Success(categoriesDto);
         }

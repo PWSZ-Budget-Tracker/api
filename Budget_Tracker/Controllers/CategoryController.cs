@@ -1,4 +1,5 @@
-﻿using Budget_Tracker.Requests;
+﻿using Budget_Tracker.Enums;
+using Budget_Tracker.Requests;
 using Budget_Tracker.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ namespace Budget_Tracker.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [AllowAnonymous]
+    [Authorize]
     public class CategoryController :BaseController
     {
         private readonly ICategoryService _categoryService;
@@ -19,14 +20,14 @@ namespace Budget_Tracker.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromBody]GetCategoriesRequest request)
+        public async Task<IActionResult> GetAll(CategoryType type)
         {
                 if (!ModelState.IsValid)
                 {
                     return Failure();
                 }
 
-                return await _categoryService.GetAll(request);
+                return await _categoryService.GetAll(type);
         }
 
         [HttpPost]

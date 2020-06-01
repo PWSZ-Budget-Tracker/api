@@ -5,6 +5,7 @@ using Budget_Tracker.Services.Interfaces;
 using Budget_Tracker.VievModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,12 +16,12 @@ namespace Budget_Tracker.Services
         public ExpenseService(BudgetTrackerContext context, IJwtService jwtService) : base(context, jwtService)
         { }
 
-        public async Task<IActionResult> GetAll(GetExpensesRequest request)
+        public async Task<IActionResult> GetAll(DateTime date)
         {
             var userId = _jwtService.GetUserId();
 
             var expenses = await _context.Expenses.Where(i => !i.IsDeleted && i.UserId == userId &&
-                i.TimeStamp.Month == request.Date.Month && i.TimeStamp.Year == request.Date.Year)
+                i.TimeStamp.Month == date.Month && i.TimeStamp.Year == date.Year)
                 .Include(i=> i.Currency).Include(i => i.Category).ToListAsync();
             var expensesDto = expenses.Select(row => ConvertToVM(row));
             return Success(expensesDto);

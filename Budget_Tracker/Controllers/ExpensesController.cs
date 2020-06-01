@@ -2,13 +2,14 @@
 using Budget_Tracker.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace Budget_Tracker.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [AllowAnonymous]
+    [Authorize]
     public class ExpensesController : BaseController
     {
         private readonly IExpenseService _expenseService;
@@ -19,14 +20,14 @@ namespace Budget_Tracker.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromBody]GetExpensesRequest request)
+        public async Task<IActionResult> GetAll(DateTime date)
         {
             if (!ModelState.IsValid)
             {
                 return Failure();
             }
 
-            return await _expenseService.GetAll(request);
+            return await _expenseService.GetAll(date);
         }
 
         [HttpPost]

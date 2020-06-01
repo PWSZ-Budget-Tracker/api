@@ -8,7 +8,7 @@ namespace Budget_Tracker.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [AllowAnonymous]
+    [Authorize]
     public class GoalController : BaseController
     {
         private readonly IGoalService _goalService;

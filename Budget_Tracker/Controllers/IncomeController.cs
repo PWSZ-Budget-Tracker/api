@@ -2,6 +2,7 @@
 using Budget_Tracker.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace Budget_Tracker.Controllers
@@ -9,7 +10,7 @@ namespace Budget_Tracker.Controllers
 
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [AllowAnonymous]
+    [Authorize]
 
     public class IncomeController :BaseController
     {
@@ -21,14 +22,14 @@ namespace Budget_Tracker.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromBody]GetIncomesRequest request)
+        public async Task<IActionResult> GetAll(DateTime date)
         {
             if (!ModelState.IsValid)
             {
                 return Failure();
             }
 
-            return await _incomeService.GetAll(request);
+            return await _incomeService.GetAll(date);
         }
 
         [HttpPost]
