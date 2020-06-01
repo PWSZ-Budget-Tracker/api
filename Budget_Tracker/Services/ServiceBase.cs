@@ -1,10 +1,8 @@
 ﻿using Budget_Tracker.Database;
 using Budget_Tracker.Responses;
+using Budget_Tracker.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Budget_Tracker.Services
 {
@@ -12,9 +10,12 @@ namespace Budget_Tracker.Services
     public class ServiceBase
     {
         protected readonly BudgetTrackerContext _context;
-        public ServiceBase(BudgetTrackerContext context)
+        protected readonly IJwtService _jwtService;
+
+        public ServiceBase(BudgetTrackerContext context, IJwtService jwtService)
         {
             _context = context;
+            _jwtService = jwtService;
         }
         protected IActionResult Success()
         {

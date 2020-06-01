@@ -2,12 +2,8 @@
 using Budget_Tracker.Models;
 using Budget_Tracker.Requests;
 using Budget_Tracker.Services.Interfaces;
-using Budget_Tracker.VievModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Budget_Tracker.Services
@@ -16,17 +12,11 @@ namespace Budget_Tracker.Services
     {
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
-        private readonly IJwtService _jwtService;
-        public AuthenticationService(BudgetTrackerContext context, SignInManager<User> signInManager, UserManager<User> userManager, IJwtService jwtService) : base(context)
+        public AuthenticationService(BudgetTrackerContext context, SignInManager<User> signInManager, 
+            UserManager<User> userManager, IJwtService jwtService) : base(context, jwtService)
         {
             _signInManager = signInManager;
-            _jwtService = jwtService;
             _userManager = userManager;
-        }
-
-        public User Authenticate(string Email)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<IActionResult> Login(LoginRequest loginRequest)
@@ -54,10 +44,8 @@ namespace Budget_Tracker.Services
 
             var user = new User()
             {
-
                 Email = registerRequest.Email,
                 UserName = registerRequest.Email
-
             };
 
             var registerResult = await _userManager.CreateAsync(user, registerRequest.Password);

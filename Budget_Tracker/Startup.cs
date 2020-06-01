@@ -7,6 +7,7 @@ using Budget_Tracker.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +31,6 @@ namespace Budget_Tracker
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
@@ -41,8 +41,6 @@ namespace Budget_Tracker
             services.AddDbContext<BudgetTrackerContext>(
                options => options.UseSqlServer(Configuration.GetConnectionString("BudgetTracker")));
 
-
-
             services.AddIdentity<User, IdentityRole<int>>()
                 .AddEntityFrameworkStores<BudgetTrackerContext>();
 
@@ -50,9 +48,13 @@ namespace Budget_Tracker
             services.Configure<AppSettings>(appSettingsSection);
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IExpenseService, ExpenseService>();
+            services.AddScoped<IGoalService, GoalService>();
+            services.AddScoped<IIncomeService, IncomeService>();
             services.AddScoped<IJwtService, JwtService>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            // configure jwt authentication
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
             services.AddAuthentication(x =>
@@ -73,10 +75,9 @@ namespace Budget_Tracker
                 };
             });
 
-            
             services.AddSwaggerDocument(document =>
             {
-                document.Title = "toDo";
+                document.Title = "Budget Tracker App Documentation";
                 document.DocumentName = "swagger";
                 document.OperationProcessors.Add(new OperationSecurityScopeProcessor("jwt"));
                 document.DocumentProcessors.Add(new SecurityDefinitionAppender("jwt", new OpenApiSecurityScheme
@@ -89,12 +90,24 @@ namespace Budget_Tracker
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<User> userManager, BudgetTrackerContext context)
         {
             if (env.IsDevelopment())
             {
+                app.UseCors(builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
                 app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseCors(builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+                app.UseHsts();
+                app.UseHttpsRedirection();
             }
 
             app.UseOpenApi(options =>
@@ -107,8 +120,6 @@ namespace Budget_Tracker
                 };
             });
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
 
             app.UseSwaggerUi3(options =>
@@ -118,6 +129,8 @@ namespace Budget_Tracker
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            DatabaseSeeder.SeedData(userManager, context);
 
             app.UseEndpoints(endpoints =>
             {
