@@ -2,10 +2,6 @@
 using Budget_Tracker.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Budget_Tracker.Controllers
@@ -24,9 +20,8 @@ namespace Budget_Tracker.Controllers
             _incomeService = incomeService;
         }
 
-        //[Route("")]
-        [HttpPost]
-        public async Task<IActionResult> GetAll(GetIncomesRequest request)
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromBody]GetIncomesRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -47,7 +42,7 @@ namespace Budget_Tracker.Controllers
             return await _incomeService.Add(request);
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> Edit(EditIncomeRequest request)
         {
             if (!ModelState.IsValid)
@@ -58,7 +53,7 @@ namespace Budget_Tracker.Controllers
             return await _incomeService.Edit(request);
         }
 
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> Delete(DeleteIncomeRequest request)
         {
             if (!ModelState.IsValid)
@@ -68,6 +63,5 @@ namespace Budget_Tracker.Controllers
 
             return await _incomeService.Delete(request);
         }
-
     }
 }

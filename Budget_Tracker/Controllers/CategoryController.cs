@@ -2,10 +2,6 @@
 using Budget_Tracker.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Budget_Tracker.Controllers
@@ -21,9 +17,9 @@ namespace Budget_Tracker.Controllers
         {
             _categoryService = categoryService;
         }
-        //[Route("")]
-        [HttpPost]
-        public async Task<IActionResult> GetAll(GetCategoriesRequest request)
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromBody]GetCategoriesRequest request)
         {
                 if (!ModelState.IsValid)
                 {
@@ -44,7 +40,7 @@ namespace Budget_Tracker.Controllers
             return await _categoryService.Add(request);
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> Edit(EditCategoryRequest request)
         {
             if (!ModelState.IsValid)
@@ -55,7 +51,7 @@ namespace Budget_Tracker.Controllers
             return await _categoryService.Edit(request);
         }
 
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> Delete(DeleteCategoryRequest request)
         {
             if (!ModelState.IsValid)
