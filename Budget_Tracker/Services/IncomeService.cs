@@ -5,8 +5,6 @@ using Budget_Tracker.Services.Interfaces;
 using Budget_Tracker.VievModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,7 +19,8 @@ namespace Budget_Tracker.Services
         {
             var userId = _jwtService.GetUserId();
             var incomes = await _context.Incomes.Where(i => !i.IsDeleted && i.UserId == userId &&
-                i.TimeStamp.Month == request.Date.Month && i.TimeStamp.Year == request.Date.Year).Include(i => i.Currency).ToListAsync();
+                i.TimeStamp.Month == request.Date.Month && i.TimeStamp.Year == request.Date.Year)
+                .Include(i => i.Currency).Include(i => i.Category).ToListAsync();
             var incomesDto = incomes.Select(row => ConvertToVM(row));
             return Success(incomesDto);
         }
@@ -41,14 +40,16 @@ namespace Budget_Tracker.Services
             _context.Incomes.Add(income);
             await _context.SaveChangesAsync();
 
-            var addedIncomes = _context.Incomes.Where(i => i.Id == income.Id).Include(i => i.Currency).FirstOrDefault();
+            var addedIncomes = _context.Incomes.Where(i => i.Id == income.Id)
+                .Include(i => i.Currency).Include(i => i.Category).FirstOrDefault();
 
             return Success(ConvertToVM(addedIncomes));
         }
 
         public async Task<IActionResult> Edit(EditIncomeRequest request)
         {
-            var income = _context.Incomes.Where(i => i.Id == request.IncomeId).Include(i => i.Currency).FirstOrDefault();
+            var income = _context.Incomes.Where(i => i.Id == request.IncomeId)
+                .Include(i => i.Currency).Include(i => i.Category).FirstOrDefault();
             if (income == null)
                 return Failure();
             income.Amount = request.Amount;
@@ -71,7 +72,9 @@ namespace Budget_Tracker.Services
             Currency = new CurrencyVM()
             {
                 ShortName = income.Currency.ShortName
-            }
+            },
+            TimeStamp = income.TimeStamp,
+            CategoryName = income.Category.Name
         };
     }
 }

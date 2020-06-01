@@ -1,13 +1,10 @@
 ﻿using Budget_Tracker.Database;
-using Budget_Tracker.Enums;
 using Budget_Tracker.Models;
 using Budget_Tracker.Requests;
 using Budget_Tracker.Services.Interfaces;
 using Budget_Tracker.VievModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,7 +15,7 @@ namespace Budget_Tracker.Services
         public GoalService(BudgetTrackerContext context, IJwtService jwtService) : base(context, jwtService)
         { }
 
-        public async Task<IActionResult> GetAll(GetGoalsRequest request)
+        public async Task<IActionResult> GetAll()
         {
             var userId = _jwtService.GetUserId();
             var goals = await _context.Goals.Where(i => !i.IsDeleted && i.UserId == userId).Include(i => i.Currency).ToListAsync();

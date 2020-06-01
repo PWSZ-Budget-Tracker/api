@@ -31,7 +31,6 @@ namespace Budget_Tracker
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
@@ -56,7 +55,6 @@ namespace Budget_Tracker
             services.AddScoped<IJwtService, JwtService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            // configure jwt authentication
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
             services.AddAuthentication(x =>
@@ -77,7 +75,6 @@ namespace Budget_Tracker
                 };
             });
 
-            
             services.AddSwaggerDocument(document =>
             {
                 document.Title = "toDo";
@@ -93,7 +90,6 @@ namespace Budget_Tracker
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<User> userManager, BudgetTrackerContext context)
         {
             if (env.IsDevelopment())
@@ -123,8 +119,6 @@ namespace Budget_Tracker
                     document.Schemes.Add(OpenApiSchema.Https);
                 };
             });
-
-            app.UseHttpsRedirection();
 
             app.UseRouting();
 
