@@ -77,7 +77,7 @@ namespace Budget_Tracker
 
             services.AddSwaggerDocument(document =>
             {
-                document.Title = "toDo";
+                document.Title = "Budget Tracker App Documentation";
                 document.DocumentName = "swagger";
                 document.OperationProcessors.Add(new OperationSecurityScopeProcessor("jwt"));
                 document.DocumentProcessors.Add(new SecurityDefinitionAppender("jwt", new OpenApiSecurityScheme
